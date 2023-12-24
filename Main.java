@@ -100,71 +100,28 @@ public class Main {
 
             switch (secim){
                 case 1:
-                    System.out.println();
-                    System.out.println("Kitap başlığını giriniz.");
-                    String baslik=scanner.nextLine();
-                    System.out.println("Yazar ismini giriniz.");
-                    String yazar=scanner.nextLine();
-                    System.out.println("ISBN kodunu giriniz.");
-                    String isbn= scanner.nextLine();
-                    System.out.println("Kitap miktarını giriniz.");
-                    int miktar=scanner.nextInt();
-                    scanner.nextLine();
-                    //addBook(baslik,yazar,isbn,miktar);
-                    System.out.println();
+                   
                     break;
                 case 2:
-                    System.out.println();
-                    System.out.println("Almak istedipiniz kitabın ISBN kodunu giriniz.");
-                    String isbn2=scanner.nextLine();
-                    System.out.println("Kullanıcı ismini giriniz.");
-                    String patron=scanner.nextLine();
-                    System.out.println("Alınıcak kitap sayısı.");
-                    int alinanKitap=scanner.nextInt();
-                    checkOutBook();
-                    System.out.println();
+                   
                     break;
                 case 3:
-                    System.out.println();
-                    System.out.println("İade istedipiniz kitabın ISBN kodunu giriniz.");
-                    String isbn3=scanner.nextLine();
-                    System.out.println("Kullanıcı ismini giriniz.");
-                    String patron1=scanner.nextLine();
-                    System.out.println("İade kitap sayısı.");
-                    int iadeKitap=scanner.nextInt();
-                    returnBook();
-                    System.out.println();
+                    
                     break;
                 case 4:
-                    System.out.println();
-                    viewAvailableBooks();
-                    System.out.println();
+                    
                     break;
                 case 5:
-                    System.out.println();
-                    System.out.println("Aramak istediğiniz kitabın ISBN,Yazar veya Başlığını yazaınız.");
-                    String isbn1= scanner.nextLine();
-                    System.out.println("Kitap aranıyor...");
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    searchBooks(isbn1);
-                    System.out.println();
+                    
                     break;
                 case 6:
-                    System.out.println();
-                    generateReports();
-                    System.out.println();
+                    
                     break;
                 case 0:
-                    System.out.println();
-                    System.out.println("Çıkış yapılıyor...");
-                    System.exit(0);
+                   
                     break;
                 default:
-                    System.out.println("Geçersiz işlem...");
+                   
                     break;
             }
         }
