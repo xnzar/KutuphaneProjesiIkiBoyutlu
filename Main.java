@@ -166,6 +166,7 @@ public class Main {
 
             switch (secim){
                 case 1:
+<<<<<<< HEAD
                     System.out.println();
                     System.out.println("Kitap başlığını giriniz.");
                     String baslik=scanner.nextLine();
@@ -177,19 +178,15 @@ public class Main {
                     String isbn= scanner.nextLine();
                     addBook(baslik,yazar,sayfaSayisi,isbn);
                     System.out.println();
+=======
+                   
+>>>>>>> 9b3d737ea2a999950a9de3de06b42417617d92e9
                     break;
                 case 2:
-                    System.out.println();
-                    System.out.println("Almak istedipiniz kitabın ISBN kodunu giriniz.");
-                    String isbn2=scanner.nextLine();
-                    System.out.println("Kullanıcı ismini giriniz.");
-                    String patron=scanner.nextLine();
-                    System.out.println("Alınıcak kitap sayısı.");
-                    int alinanKitap=scanner.nextInt();
-                    checkOutBook();
-                    System.out.println();
+                   
                     break;
                 case 3:
+<<<<<<< HEAD
                     System.out.println();
                     System.out.println("İade istedipiniz kitabın ISBN kodunu giriniz.");
                     String isbn3=scanner.nextLine();
@@ -199,13 +196,15 @@ public class Main {
                     int iadeKitap=scanner.nextInt();
                     //returnBook();
                     System.out.println();
+=======
+                    
+>>>>>>> 9b3d737ea2a999950a9de3de06b42417617d92e9
                     break;
                 case 4:
-                    System.out.println();
-                    viewAvailableBooks();
-                    System.out.println();
+                    
                     break;
                 case 5:
+<<<<<<< HEAD
                     System.out.println();
                     System.out.println("Aramak istediğiniz kitabın ISBN,Yazar veya Başlığını yazaınız.");
                     String key= scanner.nextLine();
@@ -227,14 +226,18 @@ public class Main {
                     System.out.println();
                     generateReports();
                     System.out.println();
+=======
+                    
+                    break;
+                case 6:
+                    
+>>>>>>> 9b3d737ea2a999950a9de3de06b42417617d92e9
                     break;
                 case 0:
-                    System.out.println();
-                    System.out.println("Çıkış yapılıyor...");
-                    System.exit(0);
+                   
                     break;
                 default:
-                    System.out.println("Geçersiz işlem...");
+                   
                     break;
             }
         }
