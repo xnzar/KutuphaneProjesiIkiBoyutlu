@@ -4,76 +4,141 @@ import java.util.Locale;
 
 public class Main {
 
-    static final int IMDEX=20;
-    static String[][] books=new String[IMDEX][4];
-    static String[][] patrons=new String[IMDEX][4];
-    static String[][] transactions=new String[IMDEX][3];
-    public static int bookQuantity=0;
+    static  int INDEX=20;
+    static String[][] books=new String[INDEX][4];
+    static String[][] patrons=new String[INDEX][4];
+    static String[][] transactions=new String[INDEX][3];
+    static int bookQuantity=0;
+    static int patronQuantity=0;
 
 
-
-    /*public static void addBook(String title,String author,String ISBN){
-        if (bookQuantity<IMDEX){
+    public static void addBook(String title,String author,String bookPage,String ISBN){
+        if (bookQuantity<books.length){
             books[bookQuantity][0]=title;
             books[bookQuantity][1]=author;
-            books[bookQuantity][2]=ISBN;
+            books[bookQuantity][2]=bookPage;
+            books[bookQuantity][3]=ISBN;
+
             bookQuantity++;
         }
         else {
-            System.out.println("The library capacity is full, new books cannot be added.");
-        }
+            String[][] newBooks=new String[books.length+1][4];
+            for (int i=0; i<books.length; i++){
+                for (int j=0; j<4; j++){
+                    newBooks[i][j]=books[i][j];
+                }
+            }
+            newBooks[bookQuantity][0]=title;
+            newBooks[bookQuantity][1]=author;
+            newBooks[bookQuantity][2]=bookPage;
+            newBooks[bookQuantity][3]=ISBN;
 
-
-    }*/
-    public static void addBook(String[] bookInfo){
-        if (bookInfo.length == 4 && bookQuantity<IMDEX){
-            books[bookQuantity]=new String[]{bookInfo[0],bookInfo[1],bookInfo[2],bookInfo[3]};
             bookQuantity++;
+            books=newBooks;
         }
-        else {
-            System.out.println("The library capacity is full, new books cannot be added.");
-        }
-
-
     }
-
-
-
-
-
 
     public static void checkOutBook(){
 
     }
 
 
+    public static void returnBook(String isbn){
+
+
+    }
+    public static void deleteBook(String ISBN){
+        int findIndex=-1;
+        for (int i=0; i<bookQuantity; i++) {
+            if (books[i][3].equals(ISBN)) {
+                findIndex = i;
+                break;
+            }
+        }
+                if (findIndex!=-1){
+                    for (int i=findIndex; i<bookQuantity-1; i++){
+                        books[i]=books[i+1];
+                    }
+                    //books[books.length-1]=null;
+                    bookQuantity--;
+                    System.out.println("Kitap Silinmiştir.");
+            }
+            else {
+                System.out.println("Kitap bulunmamaktadır.");
+
+            }
+        }
+   /* public static void deleteBook(String ISBN){
+        int findIndex=-1;
+        for (int i=0; i<bookQuantity; i++) {
+            if (books[i][3].equals(ISBN)) {
+                findIndex = i;
+                break;
+            }
+        }
+        if (findIndex!=-1){
+            String[][] newBooks=new String[bookQuantity-1][4];
+            for (int i=0; i<findIndex; i++){
+                newBooks[i]=books[i];
+            }
+            for (int i=findIndex; i<bookQuantity-1; i++){
+                newBooks[i]=books[i];
+            }
+           // books[bookQuantity-1]=null;
+            bookQuantity--;
+            books=newBooks;
+            System.out.println("Kitap Silinmiştir.");
+        }
+        else {
+            System.out.println("Kitap bulunmamaktadır.");
+
+        }
+    }*/
 
 
 
-    public static void returnBook(){
 
+    public static void generateReports() {
+
+        System.out.printf("%-20s %-20s %-20s %-20s%n", "Kitap İsmi", "Yazar İsmi","Kitap Sayfası", "ISBN");
+        for (int i = 0; i < bookQuantity; i++) {
+            System.out.printf("%-20s %-20s %-20s %-20s%n",books[i][0],books[i][1],books[i][2],books[i][3]);
+        }
+        System.out.println();
+        int totalBooks = 0;
+        for (int i = 0; i < bookQuantity; i++) {
+            totalBooks++;
+        }
+        System.out.println("Toplam kitap sayısı : " + totalBooks);
     }
 
 
 
-    public static void generateReports(){
 
-    }
+    public static void viewAvailableBooks() {
+        System.out.printf("%-20s %-20s %-20s %-20s%n", "Kitap İsmi", "Yazar İsmi","Kitap Sayfası", "ISBN");
 
+        for (int i = 0; i < bookQuantity; i++) {
+            System.out.printf("%-20s %-20s %-20s %-20s%n",books[i][0],books[i][1],books[i][2],books[i][3]);
+            }
 
+        }
 
+    public static void searchBooks(String keyWord){
+        boolean bookFind=false;
+        for (int i=0; i<bookQuantity; i++){
+            if (books[i][0].equals(keyWord) || books[i][1].equals(keyWord) ||books[i][3].equals(keyWord)){
+                System.out.println("Başlık: " + books[i][0] +
+                        ", Yazar: " + books[i][1] +
+                        ", Sayfa Sayısı: " + books[i][2] +
+                        ", ISBN: " + books[i][3]);
+                        bookFind=true;
+            }
+            if (!bookFind){
+                System.out.println("Kitap bulunmamaktadır.");
+            }
 
-
-    public static void viewAvailableBooks(){
-
-    }
-
-
-
-
-
-
-    public static void searchBooks(String aranacakKitap){
+        }
 
     }
 
@@ -87,7 +152,8 @@ public class Main {
                 "3. Kitap İade Et\n"+
                 "4. Mevcut Kitapları Görüntüle\n"+
                 "5. Kitap Ara\n"+
-                "6. Rapor Oluştur\n"+
+                "6. Kitap Sil\n"+
+                "7. Rapor Oluştur\n"+
                 "0. Çıkış\n";
 
         while (true){
@@ -105,12 +171,11 @@ public class Main {
                     String baslik=scanner.nextLine();
                     System.out.println("Yazar ismini giriniz.");
                     String yazar=scanner.nextLine();
+                    System.out.println("Kitap sayfa sayısını giriniz.");
+                    String sayfaSayisi=scanner.nextLine();
                     System.out.println("ISBN kodunu giriniz.");
                     String isbn= scanner.nextLine();
-                    System.out.println("Kitap miktarını giriniz.");
-                    int miktar=scanner.nextInt();
-                    scanner.nextLine();
-                    //addBook(baslik,yazar,isbn,miktar);
+                    addBook(baslik,yazar,sayfaSayisi,isbn);
                     System.out.println();
                     break;
                 case 2:
@@ -132,7 +197,7 @@ public class Main {
                     String patron1=scanner.nextLine();
                     System.out.println("İade kitap sayısı.");
                     int iadeKitap=scanner.nextInt();
-                    returnBook();
+                    //returnBook();
                     System.out.println();
                     break;
                 case 4:
@@ -143,17 +208,22 @@ public class Main {
                 case 5:
                     System.out.println();
                     System.out.println("Aramak istediğiniz kitabın ISBN,Yazar veya Başlığını yazaınız.");
-                    String isbn1= scanner.nextLine();
+                    String key= scanner.nextLine();
                     System.out.println("Kitap aranıyor...");
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
-                    searchBooks(isbn1);
+                    searchBooks(key);
                     System.out.println();
                     break;
                 case 6:
+                    System.out.println("Lütfen silmek istediğiniz kitabın ISBN kodunu giriniz.");
+                    String isbn4=scanner.nextLine();
+                    deleteBook(isbn4);
+                    break;
+                case 7:
                     System.out.println();
                     generateReports();
                     System.out.println();
