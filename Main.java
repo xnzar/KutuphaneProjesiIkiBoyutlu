@@ -1,4 +1,5 @@
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Locale;
 
@@ -39,8 +40,54 @@ public class Main {
         }
     }
 
+    public static boolean bookAvaible(String ISBN){
+        for (int i=0; i<bookQuantity; i++){
+            if (books[i][3].equals(ISBN)){
+                return true;
+            }
+        }
+        return false;
+    }
+    public static void generateBookRecommendations(String patronName) {
+        String patronRecom = null;
+        for (int i = 0; i < patronQuantity; i++) {
+            if (patrons[i][0].equals(patronName) && patrons[i][2]!=null) {
+                patronRecom = patrons[i][2];
+                break;
+            }
+        }
+        if (patronRecom == null) {
+            System.out.println("Daha önce hiç kitab alınmamiştır.");
+            return;
+        }
+        String patronAuthor=null;
+        for (int k=0; k<bookQuantity; k++){
+            if (books[k][0].equals(patronRecom)){
+                patronAuthor=books[k][1];
+                break ;
+            }
+        }
+            System.out.println("Önerilen Kitaplar:");
+            for (int j = 0; j < bookQuantity; j++) {
+                if (books[j][0].equals(patronAuthor)) {
+                    System.out.println("Başlık: " + books[j][0] +
+                            ", Yazar: " + books[j][1] +
+                            ", Sayfa Sayısı: " + books[j][2] +
+                            ", ISBN: " + books[j][3]);
+                }
+            }
+        /*for (int j= 0; j < bookQuantity; j++) {
+            if (books[j][1].equals(patronAuthor) ) {
+                System.out.println("Başlık: " + books[j][0] +
+                        ", Yazar: " + books[j][1] +
+                        ", Sayfa Sayısı: " + books[j][2] +
+                        ", ISBN: " + books[j][3]);
+            }
+            }*/
+        }
+
     public static void checkOutBook(String ISBN,String patronName,String patronId){
-        int findIndex=0;
+        int findIndex=-1;
         for (int i=0; i<bookQuantity; i++) {
             if (books[i][3].equals(ISBN)) {
                 findIndex=i;
@@ -50,7 +97,7 @@ public class Main {
         if (findIndex!=-1){
             patrons[patronQuantity][0]=patronName;
             patrons[patronQuantity][1]=patronId;
-            patrons[patronQuantity][2]=books[findIndex][0];
+            patrons[patronQuantity][2]=ISBN;//books[findIndex][0];
             Date date=new Date();
             patrons[patronQuantity][3]=date.toString();
             patronQuantity++;
@@ -59,6 +106,7 @@ public class Main {
         else {
             System.out.println("Kitap bulunamadı.");
         }
+
     }
 
 
@@ -220,87 +268,99 @@ public class Main {
                 "5. Kitap Ara\n"+
                 "6. Kitap Sil\n"+
                 "7. Rapor Oluştur\n"+
+                "8. Kullanıcı Bilgilri\n"+
+                "9. Hitap Öner\n"+
                 "0. Çıkış\n";
 
-        while (true){
+        while (true) {
 
             System.out.println(islemler);
             System.out.print("Lütfen bir seçenek girin: ");
-            int secim=scanner.nextInt();
-            scanner.nextLine();
+            try {
+                int secim = scanner.nextInt();
+                scanner.nextLine();
 
 
-            switch (secim){
-                case 1:
-                    System.out.println();
-                    System.out.println("Kitap başlığını giriniz.");
-                    String baslik=scanner.nextLine();
-                    System.out.println("Yazar ismini giriniz.");
-                    String yazar=scanner.nextLine();
-                    System.out.println("Kitap sayfa sayısını giriniz.");
-                    String sayfaSayisi=scanner.nextLine();
-                    System.out.println("ISBN kodunu giriniz.");
-                    String isbn= scanner.nextLine();
-                    addBook(baslik,yazar,sayfaSayisi,isbn);
-                    System.out.println();
+                switch (secim) {
+                    case 1:
+                        System.out.println();
+                        System.out.println("Kitap başlığını giriniz.");
+                        String baslik = scanner.nextLine();
+                        System.out.println("Yazar ismini giriniz.");
+                        String yazar = scanner.nextLine();
+                        System.out.println("Kitap sayfa sayısını giriniz.");
+                        String sayfaSayisi = scanner.nextLine();
+                        System.out.println("ISBN kodunu giriniz.");
+                        String isbn = scanner.nextLine();
+                        addBook(baslik, yazar, sayfaSayisi, isbn);
+                        System.out.println();
 
-                    break;
-                case 2:
-                    System.out.println("Almak istediğiniz kitabın ISBN kodunu giriniz.");
-                    String isbn1=scanner.nextLine();
-                    System.out.println("Kullanıcı Ad Soyad giriniz(orn:Mustafa Çetin)");
-                    String names=scanner.nextLine();
-                    System.out.println("Kullanıcı ID giriniz.");
-                    String patronId=scanner.nextLine();
-                    checkOutBook(isbn1,names,patronId);
-                    break;
-                case 3:
-                    System.out.println();
-                    System.out.println("İade istedipiniz kitabın ISBN kodunu giriniz.");
-                    String isbn3=scanner.nextLine();
-                    System.out.println("Kullanıcı ismini giriniz.");
-                    String patron1=scanner.nextLine();
-                    System.out.println("İade kitap sayısı.");
-                    int iadeKitap=scanner.nextInt();
-                    //returnBook();
-                    System.out.println();
+                        break;
+                    case 2:
+                        System.out.println("Almak istediğiniz kitabın ISBN kodunu giriniz.");
+                        String isbn1 = scanner.nextLine();
+                        System.out.println("Kullanıcı Ad Soyad giriniz(orn:Mustafa Çetin)");
+                        String names = scanner.nextLine();
+                        System.out.println("Kullanıcı ID giriniz.");
+                        String patronId = scanner.nextLine();
+                        checkOutBook(isbn1, names, patronId);
+                        break;
+                    case 3:
+                        System.out.println();
+                        System.out.println("İade istedipiniz kitabın ISBN kodunu giriniz.");
+                        String isbn3 = scanner.nextLine();
+                        System.out.println("Kullanıcı ismini giriniz.");
+                        String patron1 = scanner.nextLine();
+                        System.out.println("İade kitap sayısı.");
+                        int iadeKitap = scanner.nextInt();
+                        //returnBook();
+                        System.out.println();
 
-                    break;
-                case 4:
-                    viewAvailableBooks();
-                    break;
+                        break;
+                    case 4:
+                        viewAvailableBooks();
+                        break;
 
-                case 5:
-                    System.out.println();
-                    System.out.println("Aramak istediğiniz kitabın ISBN,Yazar veya Başlığını yazaınız.");
-                    String key= scanner.nextLine();
-                    searchBooks(key);
-                    System.out.println();
-                    break;
+                    case 5:
+                        System.out.println();
+                        System.out.println("Aramak istediğiniz kitabın ISBN,Yazar veya Başlığını yazaınız.");
+                        String key = scanner.nextLine();
+                        searchBooks(key);
+                        System.out.println();
+                        break;
 
-                case 6:
-                    System.out.println("Lütfen silmek istediğiniz kitabın ISBN kodunu giriniz.");
-                    String isbn4=scanner.nextLine();
-                    deleteBook(isbn4);
-                    break;
+                    case 6:
+                        System.out.println("Lütfen silmek istediğiniz kitabın ISBN kodunu giriniz.");
+                        String isbn4 = scanner.nextLine();
+                        deleteBook(isbn4);
+                        break;
 
-                case 7:
-                    System.out.println();
-                    generateReports();
-                    System.out.println();
-                    break;
-                case 8:
-                    viewAvailablePatrons();
-                    break;
-                case 0:
-                   System.exit(0);
-                    break;
-                default:
-                    System.out.println("Geçersiz işlem...");
-                    break;
+                    case 7:
+                        System.out.println();
+                        generateReports();
+                        System.out.println();
+                        break;
+                    case 8:
+                        viewAvailablePatrons();
+                        break;
+                    case 9:
+                        System.out.println("Lütfen Kullanıcı ismini giriniz.");
+                        String name=scanner.nextLine();
+                        generateBookRecommendations(name);
+                        break;
+                    case 0:
+                        System.exit(0);
+                        break;
+                    default:
+                        System.out.println("Geçersiz işlem...");
+                        break;
+                }
+            }
+            catch (InputMismatchException e){
+                System.out.println("Lütfen rakam ile cevap giriniz.");
+                scanner.nextLine();
             }
         }
-
     }
 }
 
