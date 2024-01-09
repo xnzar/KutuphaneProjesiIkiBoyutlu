@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Main {
 
-    static  int INDEX=20;
+    static  int INDEX=2;
     static String[][] books=new String[INDEX][4];
     static String[][] patrons=new String[INDEX][4];
     static String[][] transactions=new String[INDEX][3];
@@ -21,21 +21,25 @@ public class Main {
             bookQuantity++;
         }
         else {
-            String[][] newBooks=new String[books.length+1][4];
-            for (int i=0; i<books.length; i++){
-                for (int j=0; j<4; j++){
-                    newBooks[i][j]=books[i][j];
-                }
-            }
-            newBooks[bookQuantity][0]=title;
-            newBooks[bookQuantity][1]=author;
-            newBooks[bookQuantity][2]=bookPage;
-            newBooks[bookQuantity][3]=ISBN;
-
-            bookQuantity++;
-            books=newBooks;
+            extendBooksArrayOnAddition(title,author,bookPage,ISBN);
         }
     }
+    public static void extendBooksArrayOnAddition(String title,String author,String bookPage,String ISBN){
+        String[][] newBooks=new String[books.length+1][4];
+        for (int i=0; i<books.length; i++){
+            for (int j=0; j<4; j++){
+                newBooks[i][j]=books[i][j];
+            }
+        }
+        newBooks[bookQuantity][0]=title;
+        newBooks[bookQuantity][1]=author;
+        newBooks[bookQuantity][2]=bookPage;
+        newBooks[bookQuantity][3]=ISBN;
+
+        bookQuantity++;
+        books=newBooks;
+    }
+
 
     public static boolean bookAvaible(String ISBN){
         for (int i=0; i<bookQuantity; i++){
@@ -48,8 +52,8 @@ public class Main {
     public static void generateBookRecommendations(String patronName) {
         String patronISBN = null;
         for (int i = 0; i < patronQuantity; i++) {
-            if (patrons[i][0].equals(patronName) && patrons[i][2]!=null) {
-                patronISBN = patrons[i][2];
+            if (patrons[i][0].equals(patronName) && patrons[i][3]!=null) {
+                patronISBN = patrons[i][3];
                 break;
             }
         }
@@ -60,7 +64,7 @@ public class Main {
             String recomAuthor = books[randomIndex][1];
             String recomPageCount = books[randomIndex][2];
             String recomISBN = books[randomIndex][3];
-            System.out.printf("Size önerilen kitap: Başlık: %s, Yazar: %s, Sayfa Sayısı: %s, ISBN: %s",
+            System.out.printf("Size önerilen kitap: \nBaşlık: %s, Yazar: %s, Sayfa Sayısı: %s, ISBN: %s",
                     recomTitle, recomAuthor, recomPageCount, recomISBN);
         }
         else {
@@ -93,9 +97,9 @@ public class Main {
         if (findIndex!=-1) {
                 patrons[patronQuantity][0] = patronName;
                 patrons[patronQuantity][1] = patronId;
-                patrons[patronQuantity][2] = ISBN;
                 Date date = new Date();
-                patrons[patronQuantity][3] = date.toString();
+                patrons[patronQuantity][2] = date.toString();
+                patrons[patronQuantity][3] = ISBN;
                 patronQuantity++;
                 System.out.println("Kitap başarıyla alındı.");
             }
@@ -128,19 +132,22 @@ public class Main {
                books[i]=books[i+1];
            }
            bookQuantity--;
-           String[][] newBooks=new String[books.length][4];
-           for (int i=0; i<books.length; i++){
-               for (int j=0; j<books[i].length; j++){
-                   newBooks[i][j]=books[i][j];
-               }
-           }
-           books=newBooks;
+           truncateBooksArrayOnDeletion();
            System.out.println("Kitap Silinmiştir.");
        }
        else {
            System.out.println("Silmek isteğiniz kitap bulunmamaktadır.");
 
        }
+   }
+   public static void truncateBooksArrayOnDeletion(){
+       String[][] newBooks=new String[books.length][4];
+       for (int i=0; i<books.length; i++){
+           for (int j=0; j<books[i].length; j++){
+               newBooks[i][j]=books[i][j];
+           }
+       }
+       books=newBooks;
    }
 
     public static void updateBook(String ISBN) {
@@ -208,7 +215,7 @@ public class Main {
             System.out.printf("%-20s %-20s %-20s %-20s%n", "Kullanıcı İsmi", "Kullanıcı ID","Kitap ISBN", "Tarih");
 
             for (int i = 0; i < patronQuantity; i++) {
-                System.out.printf("%-20s %-20s %-20s %-20s%n",patrons[i][0],patrons[i][1],patrons[i][2],patrons[i][3]);
+                System.out.printf("%-20s %-20s %-20s %-20s%n",patrons[i][0],patrons[i][1],patrons[i][3],patrons[i][2]);
             }
 
         }
@@ -254,6 +261,7 @@ public class Main {
                 "0.  Çıkış\n";
 
         while (true) {
+            System.out.println();
             System.out.println(islemler);
             System.out.print("Lütfen bir seçenek girin: ");
             try {
